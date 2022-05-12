@@ -22,6 +22,7 @@ dependencies {
 	implementation 'com.sun.xml.bind:jaxb-impl:3.1.0-M1'
 	implementation 'org.springframework.boot:spring-boot-starter-security:2.6.3'
 	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.6.3'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.3'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
