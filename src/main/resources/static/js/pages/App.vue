@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-app">
   <div v-if="!profile">Необходимо авторизоваться через <a href="/login">Google</a></div>
   <div v-else >
     <div>{{profile.name}}&nbsp;<a href="/logout">Выйти</a> </div>
@@ -36,5 +36,7 @@ export default {
 }
 </script>
 <style>
-
+.main-app{
+  color: tomato;
+}
 </style>
