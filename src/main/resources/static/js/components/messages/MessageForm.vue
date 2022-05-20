@@ -1,19 +1,21 @@
 <template>
   <v-layout row>
     <v-text-field
-        label="Новое сообщение"
+        label="New message"
         placeholder="Write something"
-        v-model="text" />
-    <v-btn @click="save" >Сохранить</v-btn>
+        v-model="text"
+    />
+    <v-btn @click="save">
+      Save
+    </v-btn>
   </v-layout>
 </template>
 
 <script>
-import messagesAPI from 'API/messages'
-
+import { mapActions } from 'vuex'
 
 export default {
-  props: ['messages', 'messageAttr'],
+  props: ['messageAttr'],
   data() {
     return {
       text: '',
@@ -27,34 +29,26 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['addMessageAction', 'updateMessageAction']),
     save() {
-      const message = {id:this.id, text: this.text}
+      const message = {
+        id: this.id,
+        text: this.text
+      }
 
       if (this.id) {
-        messagesAPI.update(message).then(result =>
-            result.json().then(data => {
-              const index = this.messages.findIndex(item=>item.id===data.id)
-              this.messages.splice(index, 1, data)
-            })
-        )
+        this.updateMessageAction(message)
       } else {
-        messagesAPI.add(message).then(result =>
-            result.json().then(data => {
-              const index = this.messages.findIndex(item=>item.id===data.id)
-              if(index>-1){
-                this.messages.slice(index, 1, data)
-              }else {
-                this.messages.push(data);
-              }
-            })
-        )
+        this.addMessageAction(message)
       }
-      this.text=''
-      this.id=''
+
+      this.text = ''
+      this.id = ''
     }
   }
 }
 </script>
+
 <style>
 
 </style>
