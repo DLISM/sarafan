@@ -2,8 +2,16 @@
   <v-app>
     <v-toolbar app>
      <v-toolbar-title>Sarafan</v-toolbar-title>
+
+      <v-btn flat v-if="profile" :desapled="$route.path==='/'" @click="showMessage">
+        Messages list
+      </v-btn>
       <v-spacer></v-spacer>
-      <span v-if="profile">{{profile.name}}</span>
+      <v-btn flat v-if="profile"
+             :desapled="$route.path==='/profile'" @click="showProfile">
+        {{profile.name}}
+      </v-btn>
+
       <v-btn v-if="profile" icon href="/logout">
         <v-icon>exit_to_app</v-icon>
       </v-btn>
@@ -25,7 +33,16 @@ import {addHandler} from 'util/ws'
 
 export default {
   computed:mapState(['profile']),
-  methods:mapMutations(['addMessageMutation', 'updateMessageMutation', 'removeMessageMutation']),
+  methods:{
+
+    ...mapMutations(['addMessageMutation', 'updateMessageMutation', 'removeMessageMutation']),
+    showMessage(){
+      this.$router.push('/')
+    },
+    showProfile(){
+      this.$router.push('/profile')
+    }
+  },
   created() {
     addHandler(data=>{
       if(data.objectType==='MESSAGE') {
@@ -46,6 +63,11 @@ export default {
         console.log('Looks like the event type is unknown "${date.objectType}"')
       }
     })
+  },
+  beforeMount() {
+    if(!this.profile){
+      this.$router.replace('/auth')
+    }
   }
 }
 </script>
