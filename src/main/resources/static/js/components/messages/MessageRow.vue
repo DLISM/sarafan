@@ -1,8 +1,22 @@
 <template>
   <v-card class="my-2">
     <v-card-text primary-title>
-      <i>({{ message.id }})</i>
-      {{ message.text }}
+
+      <div>
+        <v-avatar size="36px" v-if="message.author && message.author.userpic">
+          <v-img :src="message.author.userpic" :alt="message.author.name"></v-img>
+        </v-avatar>
+        <v-avatar size="36px"  v-else color="indigo">
+          <v-icon dark>account_circle</v-icon>
+        </v-avatar>
+        <span class="pl-3">
+            {{authorName}}
+        </span>
+      </div>
+
+      <div class="pt-3">
+         {{ message.text }}
+      </div>
     </v-card-text>
     <media v-if="message.link" :message="message"></media>
     <v-card-actions>
@@ -26,6 +40,9 @@ import CommentList from "../comment/CommentList.vue";
 export default {
   props: ['message', 'editMessage'],
   components:{CommentList, Media},
+  computed:{
+    authorName(){ return this.message.author? this.message.author.name: 'unknow' }
+  },
   methods: {
     ...mapActions(['removeMessageAction']),
     edit() {
