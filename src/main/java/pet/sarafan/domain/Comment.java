@@ -1,5 +1,6 @@
 package pet.sarafan.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.EqualsAndHashCode;
 
@@ -19,7 +20,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "message_id")
-    @JsonView(Views.FullComment.class)
+    @JsonView(Views.IdName.class)
     private Message message;
 
     @ManyToOne
