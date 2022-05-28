@@ -2,17 +2,10 @@
   <v-card class="my-2">
     <v-card-text primary-title>
 
-      <div>
-        <v-avatar size="36px" v-if="message.author && message.author.userpic">
-          <v-img :src="message.author.userpic" :alt="message.author.name"></v-img>
-        </v-avatar>
-        <v-avatar size="36px"  v-else color="indigo">
-          <v-icon dark>account_circle</v-icon>
-        </v-avatar>
-        <span class="pl-3">
-            {{authorName}}
-        </span>
-      </div>
+      <user-link
+          :user="message.author"
+          size="48"
+      ></user-link>
 
       <div class="pt-3">
          {{ message.text }}
@@ -36,13 +29,12 @@
 import { mapActions } from 'vuex'
 import Media from "../media/media.vue"
 import CommentList from "../comment/CommentList.vue";
+import UserLink from "components/userLink.vue";
 
 export default {
   props: ['message', 'editMessage'],
-  components:{CommentList, Media},
-  computed:{
-    authorName(){ return this.message.author? this.message.author.name: 'unknow' }
-  },
+  components:{UserLink, CommentList, Media},
+
   methods: {
     ...mapActions(['removeMessageAction']),
     edit() {

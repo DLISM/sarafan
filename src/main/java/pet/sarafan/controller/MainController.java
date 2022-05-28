@@ -14,27 +14,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pet.sarafan.domain.User;
 import pet.sarafan.domain.Views;
 import pet.sarafan.dto.MessagePageDto;
-import pet.sarafan.repository.MessageRepo;
+import pet.sarafan.repository.UserDetailsRepo;
 import pet.sarafan.service.MessageService;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
 
+    private final UserDetailsRepo userDetailsRepo;
     private final MessageService messageService;
-    private final ObjectWriter writer;
+    private final ObjectWriter messageWriter;
+    private final ObjectWriter profileWriter;
 
     @Autowired
-    public MainController(MessageService messageService,
-                          ObjectMapper mapper
-    ) {
+    public MainController(UserDetailsRepo userDetailsRepo, MessageService messageService,
+                          ObjectMapper mapper) {
+        this.userDetailsRepo = userDetailsRepo;
         this.messageService = messageService;
 
-        this.writer = mapper
-                        .setConfig(mapper.getSerializationConfig())
+        ObjectMapper objectMapper = mapper
+                .setConfig(mapper.getSerializationConfig());
+        this.messageWriter = objectMapper
                         .writerWithView(Views.FullMessage.class);
+
+        this.profileWriter = objectMapper
+                .writerWithView(Views.FullProfile.class);
     }
 
     @GetMapping
@@ -46,15 +53,20 @@ public class MainController {
             Sort sort=Sort.by(Sort.Direction.DESC, "id");
             PageRequest page = PageRequest.of(0, MessageController.MESSAGE_PER_PAGE, sort);
             MessagePageDto messagePageDto = messageService.findAll(page);
-            String message = writer.writeValueAsString(messagePageDto.getMessages());
 
-            data.put("profile", user);
+            String message = messageWriter.writeValueAsString(messagePageDto.getMessages());
+            model.addAttribute("messages", message);
+
+            User userFromDB = userDetailsRepo.findById(user.getId()).get();
+            String serializedProfile = profileWriter.writeValueAsString(userFromDB);
+            model.addAttribute("profile", serializedProfile);
+
             data.put("currentPage", messagePageDto.getCurrentPage());
             data.put("totalPage", messagePageDto.getTotalPage());
-            model.addAttribute("messages", message);
 
         }else {
             model.addAttribute("messages", "[]");
+            model.addAttribute("profile", "null");
         }
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode", true);

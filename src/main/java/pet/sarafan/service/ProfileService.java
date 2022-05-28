@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pet.sarafan.domain.User;
 import pet.sarafan.repository.UserDetailsRepo;
 
+import java.util.Arrays;
 import java.util.Set;
 
 @Service
@@ -20,9 +21,14 @@ public class ProfileService {
     public User changeSubscription(User channel, User subscriber) {
         Set<User> subscribers = channel.getSubscribers();
 
+        System.out.println(subscriber);
+        System.out.println(subscribers);
+
+
         if(subscribers.contains(subscriber)){
             subscribers.remove(subscriber);
         }else {
+            System.out.println("Add");
             subscribers.add(subscriber);
         }
 
