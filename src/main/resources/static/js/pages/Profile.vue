@@ -45,8 +45,8 @@ export default {
     },
     isISubscibed(){
       return this.profile.subscribers && this.profile.subscribers.find(
-          subscription =>{
-            return subscription.id === this.$store.state.profile.id
+          subscriptions =>{
+            return subscriptions.id === this.$store.state.profile.id
           }
       )
     }
