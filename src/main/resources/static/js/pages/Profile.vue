@@ -22,7 +22,7 @@
             v-if="!isMyProfile"
             @click="changeSubscription"
         >
-          {{isISubscibed ? 'Unsubscribe' : 'Subscribe'}}
+          {{isISubscribed ? 'Unsubscribe' : 'Subscribe'}}
         </v-btn>
       </v-flex>
     </v-layout>
@@ -40,15 +40,16 @@ export default {
   },
 
   computed: {
-    isMyProfile(){
-      return !this.$route.params.id || this.$route.params.id === this.$store.state.profile.id
+    isMyProfile() {
+      return !this.$route.params.id ||
+          this.$route.params.id === this.$store.state.profile.id
     },
-    isISubscibed(){
-      return this.profile.subscribers && this.profile.subscribers.find(
-          subscriptions =>{
-            return subscriptions.id === this.$store.state.profile.id
-          }
-      )
+    isISubscribed() {
+      return this.profile.subscribers &&
+          this.profile.subscribers.find(subscription => {
+
+            return subscription === this.$store.state.profile.id
+          })
     }
   },
   watch:{

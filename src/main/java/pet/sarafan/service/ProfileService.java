@@ -23,7 +23,6 @@ public class ProfileService {
         if(subscribers.contains(subscriber)){
             subscribers.remove(subscriber);
         }else {
-            System.out.println("Add");
             subscribers.add(subscriber);
         }
 
