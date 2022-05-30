@@ -29,33 +29,21 @@ public class User implements Serializable {
     @JsonView(Views.FullProfile.class)
     private LocalDateTime lastVisit;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_subscriptions",
-            joinColumns = @JoinColumn(name="subscriber_id"),
-            inverseJoinColumns = @JoinColumn(name = "channel_id")
-    )
-    @JsonView(Views.FullProfile.class)
-    @JsonManagedReference
-    @JsonIdentityInfo(
-            property = "id",
-            generator = ObjectIdGenerators.PropertyGenerator.class
-    )
-    private Set<User> subscriptions=new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_subscriptions",
-            joinColumns = @JoinColumn(name="channel_id"),
-            inverseJoinColumns = @JoinColumn(name = "subscriber_id")
-    )
     @JsonView(Views.FullProfile.class)
-    @JsonManagedReference
-    @JsonIdentityInfo(
-            property = "id",
-            generator = ObjectIdGenerators.PropertyGenerator.class
+    @OneToMany(
+            mappedBy = "subscriber",
+            orphanRemoval = true
     )
-    private Set<User> subscribers=new HashSet<>();
+    private Set<UserSubscription> subscriptions=new HashSet<>();
+
+    @JsonView(Views.FullProfile.class)
+    @OneToMany(
+            mappedBy = "channel",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
+    private Set<UserSubscription> subscribers=new HashSet<>();
 
 
     public String getId() {
@@ -114,19 +102,19 @@ public class User implements Serializable {
         this.lastVisit = lastVisit;
     }
 
-    public Set<User> getSubscriptions() {
+    public Set<UserSubscription> getSubscriptions() {
         return subscriptions;
     }
 
-    public void setSubscriptions(Set<User> subscriptions) {
+    public void setSubscriptions(Set<UserSubscription> subscriptions) {
         this.subscriptions = subscriptions;
     }
 
-    public Set<User> getSubscribers() {
+    public Set<UserSubscription> getSubscribers() {
         return subscribers;
     }
 
-    public void setSubscribers(Set<User> subscribers) {
+    public void setSubscribers(Set<UserSubscription> subscribers) {
         this.subscribers = subscribers;
     }
 
@@ -141,5 +129,13 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

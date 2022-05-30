@@ -3,9 +3,12 @@ package pet.sarafan.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pet.sarafan.domain.User;
+import pet.sarafan.domain.UserSubscription;
 import pet.sarafan.repository.UserDetailsRepo;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
@@ -18,12 +21,16 @@ public class ProfileService {
 
 
     public User changeSubscription(User channel, User subscriber) {
-        Set<User> subscribers = channel.getSubscribers();
+        List<UserSubscription> subscribtions = channel.getSubscribers()
+                .stream()
+                .filter(subscription -> subscriber.getSubscriptions().equals(subscriber))
+                .collect(Collectors.toList());
 
-        if(subscribers.contains(subscriber)){
-            subscribers.remove(subscriber);
+        if(subscribtions.isEmpty()){
+            UserSubscription subscription = new UserSubscription(channel, subscriber);
+            channel.getSubscribers().add(subscription);
         }else {
-            subscribers.add(subscriber);
+            channel.getSubscribers().removeAll(subscribtions);
         }
 
         return userDetailsRepo.save(channel);
