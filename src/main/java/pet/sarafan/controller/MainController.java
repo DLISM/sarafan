@@ -18,7 +18,6 @@ import pet.sarafan.repository.UserDetailsRepo;
 import pet.sarafan.service.MessageService;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -52,7 +51,7 @@ public class MainController {
 
             Sort sort=Sort.by(Sort.Direction.DESC, "id");
             PageRequest page = PageRequest.of(0, MessageController.MESSAGE_PER_PAGE, sort);
-            MessagePageDto messagePageDto = messageService.findAll(page);
+            MessagePageDto messagePageDto = messageService.findForUser(page, user);
 
             String message = messageWriter.writeValueAsString(messagePageDto.getMessages());
             model.addAttribute("messages", message);

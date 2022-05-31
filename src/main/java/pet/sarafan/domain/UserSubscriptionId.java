@@ -9,13 +9,12 @@ import java.io.Serializable;
 public class UserSubscriptionId implements Serializable {
     @JsonView(Views.Id.class)
     private String channelId;
-
     @JsonView(Views.Id.class)
-    private String SubscriberId;
+    private String subscriberId;
 
     public UserSubscriptionId(String channelId, String subscriberId) {
         this.channelId = channelId;
-        SubscriberId = subscriberId;
+        this.subscriberId = subscriberId;
     }
     public UserSubscriptionId(){
 
@@ -29,10 +28,10 @@ public class UserSubscriptionId implements Serializable {
     }
 
     public String getSubscriberId() {
-        return SubscriberId;
+        return subscriberId;
     }
 
     public void setSubscriberId(String subscriberId) {
-        SubscriberId = subscriberId;
+        subscriberId = subscriberId;
     }
 }

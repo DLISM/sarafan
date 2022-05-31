@@ -20,7 +20,7 @@ public class UserSubscription implements Serializable {
     @MapsId("channelId")
     @ManyToOne
     @JsonView(Views.IdName.class)
-    @JsonManagedReference
+    @JsonIdentityReference
     @JsonIdentityInfo(
             property = "id",
             generator = ObjectIdGenerators.PropertyGenerator.class
@@ -30,7 +30,7 @@ public class UserSubscription implements Serializable {
     @MapsId("subscriberId")
     @ManyToOne
     @JsonView(Views.IdName.class)
-    @JsonManagedReference
+    @JsonIdentityReference
     @JsonIdentityInfo(
             property = "id",
             generator = ObjectIdGenerators.PropertyGenerator.class
@@ -43,7 +43,7 @@ public class UserSubscription implements Serializable {
     public UserSubscription(User channel, User subscriber) {
         this.channel = channel;
         this.subscriber = subscriber;
-        this.id=new UserSubscriptionId(channel.getId(), subscriber.getId());
+        this.id = new UserSubscriptionId(channel.getId(), subscriber.getId());
     }
 
     public UserSubscription() {
