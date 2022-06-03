@@ -14,7 +14,16 @@
               <v-flex>{{ profile.local }}</v-flex>
               <v-flex>{{ profile.lastVisit }}</v-flex>
               <v-flex>{{profile.subscriptions && profile.subscriptions.length}} subscriptions</v-flex>
-              <v-flex>{{profile.subscribers && profile.subscribers.length}} subscribers</v-flex>
+
+              <router-link v-if="isMyProfile" :to="`/subscriptions/${userId}`">
+                {{profile.subscribers && profile.subscribers.length}}
+                subscribers
+              </router-link>
+              <v-flex v-else>
+                {{profile.subscribers && profile.subscribers.length}}
+                subscribers
+              </v-flex>
+
             </v-layout>
           </v-flex>
         </v-layout>
@@ -50,6 +59,9 @@ export default {
 
             return subscription === this.$store.state.profile.id
           })
+    },
+    userId() {
+      return this.profile ? String(this.profile.id) : 'null'
     }
   },
   watch:{
