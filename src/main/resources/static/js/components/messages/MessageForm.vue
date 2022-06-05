@@ -33,7 +33,6 @@ export default {
   methods: {
     ...mapActions(['addMessageAction', 'updateMessageAction']),
     save() {
-      Sentry.captureMessage('Start editing')
       const message = {
         id: this.id,
         text: this.text
@@ -48,7 +47,6 @@ export default {
       this.text = ''
       this.id = null
 
-      throw new Error("bang!")
     }
   }
 }

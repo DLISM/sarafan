@@ -18,6 +18,8 @@ import pet.sarafan.repository.UserDetailsRepo;
 import pet.sarafan.service.MessageService;
 
 import java.util.HashMap;
+import java.lang.Exception;
+import io.sentry.Sentry;
 
 @Controller
 @RequestMapping("/")
@@ -69,6 +71,9 @@ public class MainController {
         }
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode", true);
+
+
+
 
         return "index";
     }
